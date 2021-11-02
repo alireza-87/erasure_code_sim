@@ -24,7 +24,14 @@ class State:
         self.item_k = k
         self.node_online = True  # the node starts online
         self.server_online = [True] * cnt.N  # servers all start online
-        self.remote_blocks = [[False] * cnt.B] * cnt.N  # no server starts having their block
+        self.remote_blocks = [False] * cnt.N
+        if not cnt.B == 1:
+            for i in range(len(self.remote_blocks)):
+                self.remote_blocks[i] = [False] * cnt.B
+        # if cnt.B == 1:
+        #    self.remote_blocks = [False] * cnt.N
+        # else:
+        #    self.remote_blocks = [[False] * cnt.B] * cnt.N  # no server starts having their block
         self.local_blocks = [True] * cnt.N  # flags each locally owned block
 
         self.current_upload = self.current_download = None
@@ -44,41 +51,50 @@ class State:
     def schedule_next_upload(self):
         """Schedule the next upload, if any."""
         if self.node_online:
-            for i in range(len(self.local_blocks)):
-                for j in range(0, cnt.B):
-                    if self.local_blocks[i] and self.server_online[i] and not self.remote_blocks[i][j]:
-                        self.current_upload = UploadComplete(i, j)
+            for i in range(0, cnt.N):
+                if not cnt.B == 1:
+                    for j in range(0, cnt.B):
+                        if self.local_blocks[i] and self.server_online[i] and not self.remote_blocks[i][j]:
+                            self.current_upload = UploadComplete(i, j)
+                            self.schedule(exp_rv(self.time_upload), self.current_upload)
+                else:
+                    if self.local_blocks[i] and self.server_online[i] and not self.remote_blocks[i]:
+                        self.current_upload = UploadComplete(i, -1)
                         self.schedule(exp_rv(self.time_upload), self.current_upload)
+
         # if the node is online, upload a possessed local block to an online
         # server that doesn't have it (if possible)
 
     def schedule_next_download(self):
         """Schedule the next download, if any."""
         if self.node_online:
-            for i in range(len(self.remote_blocks)):
-                for j in range(0, cnt.B):
-                    if self.remote_blocks[i][j] and self.server_online[i] and not self.local_blocks[i]:
+            for i in range(cnt.N):
+                if not cnt.B == 1:
+                    for j in range(0, cnt.B):
+                        if self.remote_blocks[i][j] and self.server_online[i] and not self.local_blocks[i]:
+                            self.current_download = DownloadComplete(i)
+                            self.schedule(exp_rv(self.time_download), self.current_download)
+                else:
+                    if self.remote_blocks[i] and self.server_online[i] and not self.local_blocks[i]:
                         self.current_download = DownloadComplete(i)
                         self.schedule(exp_rv(self.time_download), self.current_download)
+
         # if the node is online, download a remote block the node doesn't
         # have from an online server which has it (if possible)
 
     def check_game_over(self):
         """Did we lose enough redundancy that we can't recover data?"""
         # check if we have at least K blocks saved, either locally or remotely
-        lbs, rbs = self.local_blocks, self.remote_blocks
-        blocks_saved = []
-        result = []
-        for i in rbs:
-            result.append(any(i))
-        blocks_saved = [lb or rb for lb, rb in zip(lbs, result)]
-        # if cnt.B == 1:
-        #     blocks_saved = [lb or rb for lb, rb in zip(lbs, rbs)]
-        # else:
-        #     result = []
-        #     for i in rbs:
-        #         result.append(any(i))
-        #     blocks_saved = [lb or rb for lb, rb in zip(lbs, result)]
-        # blocks_saved = [lb or rb for lb, rb in zip(lbs, rbs)]
-        if sum(blocks_saved) < self.item_k:
-            raise SystemFail()
+        if cnt.B == 1:
+            lbs, rbs = self.local_blocks, self.remote_blocks
+            blocks_saved = [lb or rb for lb, rb in zip(lbs, rbs)]
+            if sum(blocks_saved) < self.item_k:
+                raise SystemFail()
+        else:
+            lbs, rbs = self.local_blocks, self.remote_blocks
+            result = []
+            for i in rbs:
+                result.append(any(i))
+            blocks_saved = [lb or rb for lb, rb in zip(lbs, result)]
+            if sum(blocks_saved) < self.item_k:
+                raise SystemFail()

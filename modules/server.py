@@ -51,7 +51,10 @@ class ServerFail(ServerOffline):
     """A server failed and lost its data."""
 
     def process(self, state):
-        state.remote_blocks[self.server] = [False] * cnt.B
+        if not cnt.B == 1:
+            state.remote_blocks[self.server] = [False] * cnt.B
+        else:
+            state.remote_blocks[self.server] = False
         state.check_game_over()
         state.schedule(exp_rv(cnt.SERVER_LIFETIME), ServerFail(self.server))
         super().process(state)
