@@ -13,13 +13,12 @@ from modules.colors import Colors
 
 
 class State:
-    current_k = 0
     time_upload = 0
     time_download = 0
     item_k = 0
 
     def __init__(self, t_u, t_d, k):
-        self.t = t = 0  # seconds
+        self.t = 0  # seconds
         self.time_upload = t_u
         self.time_download = t_d
         self.item_k = k
@@ -32,7 +31,7 @@ class State:
         # if cnt.B == 1:
         #    self.remote_blocks = [False] * cnt.N
         # else:
-        #    self.remote_blocks = [[False] * cnt.B] * cnt.N  # no server starts having their block
+        #    self.remote_blocks = [[False] * cnt.B] * cnt.N  # DONT USE THIS
         self.local_blocks = [True] * cnt.N  # flags each locally owned block
 
         self.current_upload = self.current_download = None

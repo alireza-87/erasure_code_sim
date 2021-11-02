@@ -6,8 +6,7 @@ class DownloadComplete(ServerEvent):
     """A download is completed."""
 
     def process(self, state):
-        if state.current_download is not self:
-            # download interrupted
+        if state.current_download is not self:  # interrupted
             return
         lb = state.local_blocks
         lb[self.server] = True

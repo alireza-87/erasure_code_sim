@@ -10,8 +10,7 @@ class UploadComplete(ServerEvent):
         self.block = block
 
     def process(self, state):
-        if state.current_upload is not self:
-            # this upload was interrupted, we ignore this event
+        if state.current_upload is not self:  # interrupted
             return
         if cnt.B == 1:
             state.remote_blocks[self.server] = True

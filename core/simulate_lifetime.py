@@ -5,14 +5,18 @@ import constant as cnt
 from exceptions import SystemFail
 from core.state import State
 from plots import plot
+from modules.colors import Colors
 
 
 def sim_life_time():
     for item_d, item_u in itertools.product(cnt.DOWNLOAD_SPEED, cnt.UPLOAD_SPEED):
+        print(f'{Colors.WARNING}upload : {item_u}, download : {item_d}{Colors.ENDC}')
         life_time = {}
         for item_data in cnt.DATA_SIZE:
+            print(f'{Colors.OKCYAN}data size : {item_data / cnt.GB}{Colors.ENDC}')
             times = []
             for item_k in cnt.K:
+                print(f'{Colors.OKCYAN}k : {item_k}{Colors.ENDC}')
                 block_size = item_data / item_k
                 time_upload = block_size / item_u
                 time_download = block_size / item_d
