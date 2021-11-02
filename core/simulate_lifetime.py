@@ -31,6 +31,6 @@ def sim_life_time():
                         pass
                     finally:
                         temp.append(state.t / cnt.YEAR)
-                times.append(sum(temp)/cnt.NUMBER_OF_ITERATION)
+                times.append(sum(temp))
             life_time[item_data / cnt.GB] = times
         plot.plot_life_time(life_time, 'D:' + str(item_d/cnt.MB) + ',U:' + str(item_u/cnt.MB))

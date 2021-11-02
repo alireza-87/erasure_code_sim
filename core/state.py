@@ -51,16 +51,17 @@ class State:
     def schedule_next_upload(self):
         """Schedule the next upload, if any."""
         if self.node_online:
-            for i in range(0, cnt.N):
-                if not cnt.B == 1:
+            if cnt.B == 1:
+                for i in range(0, cnt.N):
+                    if self.local_blocks[i] and self.server_online[i] and not self.remote_blocks[i]:
+                        self.current_upload = UploadComplete(i,0)
+                        self.schedule(exp_rv(self.time_upload), self.current_upload)
+            else:
+                for i in range(0, cnt.N):
                     for j in range(0, cnt.B):
                         if self.local_blocks[i] and self.server_online[i] and not self.remote_blocks[i][j]:
                             self.current_upload = UploadComplete(i, j)
                             self.schedule(exp_rv(self.time_upload), self.current_upload)
-                else:
-                    if self.local_blocks[i] and self.server_online[i] and not self.remote_blocks[i]:
-                        self.current_upload = UploadComplete(i, -1)
-                        self.schedule(exp_rv(self.time_upload), self.current_upload)
 
         # if the node is online, upload a possessed local block to an online
         # server that doesn't have it (if possible)

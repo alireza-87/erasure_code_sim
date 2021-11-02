@@ -1,6 +1,7 @@
 from modules.server import ServerEvent
 import constant as cnt
 
+
 class UploadComplete(ServerEvent):
     """An upload is completed."""
 
@@ -14,7 +15,8 @@ class UploadComplete(ServerEvent):
             return
         if cnt.B == 1:
             state.remote_blocks[self.server] = True
+            state.schedule_next_upload()
         else:
             for i in range(0, self.server):
                 state.remote_blocks[i][self.block] = True
-        state.schedule_next_upload()
+            state.schedule_next_upload()

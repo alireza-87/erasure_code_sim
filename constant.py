@@ -34,6 +34,6 @@ SERVER_UPTIME = 30 * DAY
 SERVER_DOWNTIME = 2 * HOUR
 
 # length of the simulation
-MAXT = 10 * YEAR
+MAXT = 1 * YEAR
 NUMBER_OF_ITERATION = 5
-B = 10  # number of Block in a server
+B = 1  # number of Block in a server

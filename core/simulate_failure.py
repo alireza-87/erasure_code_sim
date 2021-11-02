@@ -20,7 +20,7 @@ def sim_failure():
                 block_size = item_data / item_k
                 time_upload = block_size / item_u
                 time_download = block_size / item_d
-                for i in range(cnt.NUMBER_OF_ITERATION+1):
+                for i in range(cnt.NUMBER_OF_ITERATION + 1):
                     try:
                         state_current = State(time_upload, time_download, item_k)
                         event_queue = state_current.events
@@ -34,4 +34,4 @@ def sim_failure():
                         fail_count = fail_count + 1
                 fail.append(fail_count)
             fails_list[item_k] = fail
-        plot.plot_fail(fails_list, 'data size : '+ str(item_data / cnt.GB))
+        plot.plot_fail(fails_list, 'data size : ' + str(item_data / cnt.GB))
