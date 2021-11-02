@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import itertools
 import constant as cnt
+from modules.colors import Colors
 
 
 def plot_life_time(data_to_plot, title):
@@ -20,7 +21,7 @@ def plot_life_time(data_to_plot, title):
 
 
 def plot_fail(data_to_plot, title):
-    print("data to plot", data_to_plot)
+    print(f"{Colors.OKGREEN}data to plot {data_to_plot}{Colors.ENDC}")
     fig, ax = plt.subplots()
     ax.set_title(title)
     ax.set_xlabel('K')

@@ -9,6 +9,7 @@ from modules.server import ServerFail
 from modules.server import ServerOffline
 from modules.upload_download.upload_complete import UploadComplete
 from utilities import exp_rv
+from modules.colors import Colors
 
 
 class State:
@@ -90,6 +91,7 @@ class State:
             lbs, rbs = self.local_blocks, self.remote_blocks
             blocks_saved = [lb or rb for lb, rb in zip(lbs, rbs)]
             if sum(blocks_saved) < self.item_k:
+                print(f"{Colors.FAIL} System Fail , saved block : {sum(blocks_saved)}{Colors.ENDC}")
                 raise SystemFail()
         else:
             lbs, rbs = self.local_blocks, self.remote_blocks
@@ -98,4 +100,5 @@ class State:
                 result.append(any(i))
             blocks_saved = [lb or rb for lb, rb in zip(lbs, result)]
             if sum(blocks_saved) < self.item_k:
+                print(f"{Colors.FAIL} System Fail , saved block : {sum(blocks_saved)}{Colors.ENDC}")
                 raise SystemFail()

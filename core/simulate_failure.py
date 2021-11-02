@@ -5,17 +5,18 @@ import constant as cnt
 from exceptions import SystemFail
 from core.state import State
 from plots import plot
+from modules.colors import Colors
 
 
 def sim_failure():
     for item_data in cnt.DATA_SIZE:
-        print('data size : ', item_data / cnt.GB)
+        print(f'{Colors.OKCYAN}data size : {item_data / cnt.GB}{Colors.ENDC}')
         fails_list = {}
         for item_k in cnt.K:
             fail = []
-            print('k : ', item_k)
+            print(f'{Colors.OKCYAN}k : {item_k}{Colors.ENDC}')
             for item_d, item_u in itertools.product(cnt.DOWNLOAD_SPEED, cnt.UPLOAD_SPEED):
-                print('upload : ', item_u, ' , download : ', item_d)
+                print(f'{Colors.WARNING}upload : {item_u}, download : {item_d}{Colors.ENDC}')
                 fail_count = 0
                 block_size = item_data / item_k
                 time_upload = block_size / item_u
