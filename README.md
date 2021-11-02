@@ -19,9 +19,12 @@ Configurable option through constant.py:
 * list of Data Size
 * Number of iteration
 
-1 block per server
+1 block per server:
+
 ![added_10](./myplot-1-1.jpg)  
 ![added_10](./myplot-1-3.jpg)
-10 block per server
+
+10 block per server:
+
 ![added_10](./myplot-10-1.jpg)
 ![added_10](./myplot-10-4.jpg)
